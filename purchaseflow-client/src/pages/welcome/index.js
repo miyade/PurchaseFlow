@@ -2,7 +2,6 @@ import React from 'react';
 import { Container, Button, Form, FormGroup, Input } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 export default function Welcome({history}){
 
 
