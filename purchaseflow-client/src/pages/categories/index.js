@@ -1,11 +1,10 @@
 import React, { useEffect, useState} from 'react';import { Container, Button, Form, FormGroup, Input } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '../../services/api';
-import axios from 'axios';
 
 export default function Welcome({history}){
     const [categories, setCategories] = useState([]);
-    const apiURL= 'https://testapi.numan.com/v1/product_categories';
+    const apiURL= '/v1/product_categories';
     useEffect(() => {
         getEvents()
     },[])
@@ -20,14 +19,16 @@ export default function Welcome({history}){
    console.log(categories)
 
     return (
-       <ul className="categories-list">
-
-           {categories.map(category => (
-               <li key={category.id}>
-                   <strong>{category.attributes.name}</strong>
-               </li>
-           ))}
-
-       </ul>
+        <div>
+            <ul className="categories-list">
+                {categories.map(category => (
+                    <li key={category.id}>
+                    <strong>{category.attributes.name}</strong>
+                    </li>
+                     ))}
+            </ul>
+            <Button>Next</Button> 
+        </div>
+       
     )
 }
