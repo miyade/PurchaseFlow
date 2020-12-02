@@ -2,8 +2,11 @@ import React, { useEffect, useState} from 'react';
 import {Label, Modal, ModalHeader, ModalBody, ModalFooter, Container, Button, Form, FormGroup, Input } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '../../services/api';
+import { useHistory } from "react-router-dom";
 
-export default function Welcome({history}){
+
+export default function Welcome(){
+    let history = useHistory();
 
     const [categories, setCategories] = useState([]);
     const [selected, setSelected] = useState();
@@ -11,7 +14,7 @@ export default function Welcome({history}){
     const [selectedCategory, setSelectedCategory] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState();
+    const [phoneNumber, setPhoneNumber] = useState("");
     const [emailAddress, setEmailAddress] = useState("");
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState(false)
@@ -36,8 +39,7 @@ export default function Welcome({history}){
     }
 
 
-    const submitHandler = async (evt) => {
-        evt.preventDefault()
+    const submitHandler = async () => {
 
         const contactData = new FormData();
 
@@ -50,14 +52,24 @@ export default function Welcome({history}){
             if (firstName !== "" &&
                 lastName !== "" &&
                 emailAddress !== "" &&
-                phoneNumber !== null &&
+                phoneNumber !== "" &&
                 selectedCategory !== "" 
               
             ) {
                 setSuccess(true)
                 setTimeout(() => {
                     setSuccess(false)
-                    history.push("/")
+
+                    history.push({ 
+                        pathname: '/confirmation',
+                        state: {
+                            firstName: firstName,
+                            lastName: lastName,
+                            emailAddress: emailAddress,
+                            phoneNumber: phoneNumber,
+                            selectedCategory: selectedCategory
+                        }
+                       });
                 }, 2000)
             } else {
                 setError(true)
@@ -97,7 +109,7 @@ export default function Welcome({history}){
             <ModalHeader toggle={toggle}>Contact Information</ModalHeader>
             <ModalBody>
             
-            <Form onSubmit={submitHandler}>
+            <Form>
                     <FormGroup>
                         <Label>First Name: </Label>
                         <Input id="title" type="text" value={firstName} placeholder={'First Name ..'} onChange={(evt) => setFirstName(evt.target.value)} />
@@ -121,7 +133,7 @@ export default function Welcome({history}){
             </ModalBody>
             <ModalFooter>
             <FormGroup>
-                    <Button className="submit-btn" >Submit</Button>
+                    <Button onClick={()=>submitHandler()} className="submit-btn" >Submit</Button>
                 </FormGroup>
                 <FormGroup>
                     <Button className="secondary-btn" onClick={() => toggle()}>
