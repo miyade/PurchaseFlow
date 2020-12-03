@@ -35,6 +35,8 @@ p, a, span{
         -webkit-transition: background .3s;
         transition: background .3s;
     }
+    
+    
         .categories a:hover {
             background: #50597b;
         }

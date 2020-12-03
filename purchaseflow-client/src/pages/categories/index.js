@@ -27,7 +27,7 @@ export default function Welcome(){
     const toggle = () => setModal(!modal);
 
     const selectHandler = async (selectedItem) => {
-      // console.log('this works');
+        
        setSelected(true);
        setSelectedCategory(selectedItem);
     }
@@ -89,7 +89,10 @@ export default function Welcome(){
                         
                         <li>
                             <a>
-                                <p onClick={() => selectHandler(category.attributes.name)} class="categories-name"><span class="name">{category.attributes.name}</span> <span class="scnd-font-color">29/06</span></p>
+                                <p onClick={() => selectHandler(category.attributes.name)} class="categories-name"><span class="name">{category.attributes.name}</span>
+                                
+                                
+                               </p>
                             </a>
                         </li>
                     </ul>
@@ -98,7 +101,7 @@ export default function Welcome(){
                     ))}
             {
                 selected ? (
-                    <Button onClick={toggle}> Next </Button>
+                    <Button onClick={toggle}>Continue with {selectedCategory}</Button>
                 ) : ""
             }
 
