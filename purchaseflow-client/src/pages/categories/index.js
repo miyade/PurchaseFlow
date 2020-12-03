@@ -3,26 +3,21 @@ import {Label, Modal, ModalHeader, ModalBody, ModalFooter, Container, Button, Fo
 import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '../../services/api';
 import { useHistory } from "react-router-dom";
+import './index.css'
 
 
 export default function Welcome(){
-    let history = useHistory();
-
-    const [categories, setCategories] = useState([]);
-    const [selected, setSelected] = useState();
+    let history = useHistory(); 
+    const [categories, setCategories] = useState([]); 
+    const [selected, setSelected] = useState(); 
     const [modal, setModal] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState(""); 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [emailAddress, setEmailAddress] = useState("");
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState(false)
-
-
-
-
-
 
     const apiURL= '/v1/product_categories';
     useEffect(() => {
@@ -31,35 +26,25 @@ export default function Welcome(){
 
     const toggle = () => setModal(!modal);
 
-    
     const selectHandler = async (selectedItem) => {
       // console.log('this works');
        setSelected(true);
        setSelectedCategory(selectedItem);
     }
 
+    // Contact form submit + selected category passed through history to next page
 
     const submitHandler = async () => {
-
-        const contactData = new FormData();
-
-        contactData.append("firstName", firstName)
-        contactData.append("lastName", lastName)
-        contactData.append("emailAddress", emailAddress)
-        contactData.append("phoneNumber", phoneNumber)
-        contactData.append("selectedCategory", selectedCategory)
         try {
             if (firstName !== "" &&
                 lastName !== "" &&
                 emailAddress !== "" &&
                 phoneNumber !== "" &&
                 selectedCategory !== "" 
-              
             ) {
                 setSuccess(true)
                 setTimeout(() => {
                     setSuccess(false)
-
                     history.push({ 
                         pathname: '/confirmation',
                         state: {
@@ -83,32 +68,56 @@ export default function Welcome(){
         }
     }
 
+// Getting events from api url using axios, the BaseURL is in the api file
    const getEvents = async () => {
-      
         const response= await api.get(apiURL)
         setCategories(response.data.data)
    };
-   //console.log(categories)
+
+
+
 
     return (
+
+
+
+        
         <div>
-            <ul className="categories-list">
                 {categories.map(category => (
-                    <li key={category.id}>
-                    <strong onClick={() => selectHandler(category.attributes.name)} >{category.attributes.name}</strong>
-                    </li>
-                     ))}
-            </ul>
+
+                    <ul class="categories">
+                        
+                        <li>
+                            <a>
+                                <p onClick={() => selectHandler(category.attributes.name)} class="categories-name"><span class="name">{category.attributes.name}</span> <span class="scnd-font-color">29/06</span></p>
+                            </a>
+                        </li>
+                    </ul>
+
+
+                    ))}
             {
                 selected ? (
                     <Button onClick={toggle}> Next </Button>
                 ) : ""
             }
-           
+
+
+
+
+
+
+
+
+
+
+
+
+            {/* This is the Modal that opens up for client to put his information */}
+
             <Modal isOpen={modal} toggle={toggle}>
             <ModalHeader toggle={toggle}>Contact Information</ModalHeader>
             <ModalBody>
-            
             <Form>
                     <FormGroup>
                         <Label>First Name: </Label>
@@ -127,7 +136,6 @@ export default function Welcome(){
                         <Input id="date" type="text" value={phoneNumber} placeholder={'Phone Number.. '} onChange={(evt) => setPhoneNumber(evt.target.value)} />
                     </FormGroup>
             </Form>
-
                 <Input type="checkbox" />{' '}
                 Accept <a href="">Terms & Conditions</a>
             </ModalBody>
@@ -142,6 +150,10 @@ export default function Welcome(){
                 </FormGroup>
             </ModalFooter>
             </Modal>
+            {/* END of Modal */}
+
+
+
 
         </div>
        
