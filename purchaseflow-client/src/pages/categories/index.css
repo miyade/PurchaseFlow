@@ -7,16 +7,16 @@ a {
 	text-decoration: none;
 	font-size: 15px;
 }
+    
 	a:hover {
 		text-decoration: underline;
 	}
-
-p, a, span{
+.catname{
+    color: white;
+}
+p, span{
 	color: #fff;
 }
-	.scnd-font-color {
-		color: #9099b7;
-	}
 .icon {
 	font-size: 25px;
 }
@@ -35,7 +35,8 @@ p, a, span{
         -webkit-transition: background .3s;
         transition: background .3s;
     }
-    
+
+
     
         .categories a:hover {
             background: #50597b;
@@ -43,6 +44,11 @@ p, a, span{
        .categories a:hover .name {
             color: #e64c65;
         }
+        .categories a:hover .name {
+            color: #e64c65;
+        }
        .categories-name {
             padding-left: 20px;
         }
+
+       

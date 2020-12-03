@@ -16,11 +16,8 @@ export default function Welcome({history}){
     return (
         <Container>
          <div className="wrapper">
-    <button onClick={() => handleSubmit()} className="button">Get Started</button>
-</div>
-        
-
-           
+            <button onClick={() => handleSubmit()} className="button">Get Started</button>
+        </div>
         </Container>
     );
 }

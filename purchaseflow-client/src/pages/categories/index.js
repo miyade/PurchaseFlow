@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import {Label, Modal, ModalHeader, ModalBody, ModalFooter, Container, Button, Form, FormGroup, Input } from 'reactstrap';
+import {Alert, Label, Modal, ModalHeader, ModalBody, ModalFooter, Container, Button, Form, FormGroup, Input } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import api from '../../services/api';
 import { useHistory } from "react-router-dom";
@@ -18,6 +18,9 @@ export default function Welcome(){
     const [emailAddress, setEmailAddress] = useState("");
     const [success, setSuccess] = useState(false)
     const [error, setError] = useState(false)
+    const[chkbox,setChkbox] = useState(false);
+    const[messageHandler, setMessageHandler] = useState('');
+
 
     const apiURL= '/v1/product_categories';
     useEffect(() => {
@@ -31,6 +34,8 @@ export default function Welcome(){
        setSelected(true);
        setSelectedCategory(selectedItem);
     }
+    const handleChangeChk = () => setChkbox(true);
+
 
     // Contact form submit + selected category passed through history to next page
 
@@ -42,25 +47,39 @@ export default function Welcome(){
                 phoneNumber !== "" &&
                 selectedCategory !== "" 
             ) {
-                setSuccess(true)
-                setTimeout(() => {
-                    setSuccess(false)
-                    history.push({ 
-                        pathname: '/confirmation',
-                        state: {
-                            firstName: firstName,
-                            lastName: lastName,
-                            emailAddress: emailAddress,
-                            phoneNumber: phoneNumber,
-                            selectedCategory: selectedCategory
-                        }
-                       });
-                }, 2000)
+                if(chkbox) { 
+                    setSuccess(true)
+                    setMessageHandler("Successfully submitted")
+
+                    setTimeout(() => {
+                        setSuccess(false)
+                        history.push({ 
+                            pathname: '/confirmation',
+                            state: {
+                                firstName: firstName,
+                                lastName: lastName,
+                                emailAddress: emailAddress,
+                                phoneNumber: phoneNumber,
+                                selectedCategory: selectedCategory
+                            }
+                           });
+                    }, 2000)
+                }
+                else{
+                    setError(true)
+                    setMessageHandler("You need to accept the terms and conditions first")
+                    setTimeout(() => {
+                    setError(false)
+                }, 4000)
+                }
+
+               
             } else {
+                setMessageHandler("You must fill all the information")
                 setError(true)
                 setTimeout(() => {
                     setError(false)
-                }, 2000)
+                }, 4000)
             }
         } catch (error) {
             Promise.reject(error);
@@ -74,31 +93,20 @@ export default function Welcome(){
         setCategories(response.data.data)
    };
 
-
-
-
     return (
-
-
-
-        
         <div>
                 {categories.map(category => (
-
                     <ul class="categories">
-                        
                         <li>
-                            <a>
-                                <p onClick={() => selectHandler(category.attributes.name)} class="categories-name"><span class="name">{category.attributes.name}</span>
-                                
-                                
+                            <a className="catname">
+                                <p onClick={() => selectHandler(category.attributes.name) } class="categories-name">
+                                    <span class="name">{category.attributes.name}</span>
                                </p>
                             </a>
                         </li>
                     </ul>
-
-
                     ))}
+            
             {
                 selected ? (
                     <Button onClick={toggle}>Continue with {selectedCategory}</Button>
@@ -139,8 +147,19 @@ export default function Welcome(){
                         <Input id="date" type="text" value={phoneNumber} placeholder={'Phone Number.. '} onChange={(evt) => setPhoneNumber(evt.target.value)} />
                     </FormGroup>
             </Form>
-                <Input type="checkbox" />{' '}
+                <Input type="checkbox" checked={chkbox}  onChange={handleChangeChk}/>{' '}
                 Accept <a href="">Terms & Conditions</a>
+                {
+                error ? (
+                    <Alert className="event-validation" color="danger"> {messageHandler} </Alert>
+                ) : ""
+            }
+            {
+                success ? (
+                    <Alert className="event-validation" color="success"> {messageHandler}</Alert>
+                ) : ""
+            }
+
             </ModalBody>
             <ModalFooter>
             <FormGroup>
@@ -151,12 +170,12 @@ export default function Welcome(){
                         Cancel
                     </Button>
                 </FormGroup>
+                
             </ModalFooter>
             </Modal>
             {/* END of Modal */}
 
-
-
+           
 
         </div>
        
