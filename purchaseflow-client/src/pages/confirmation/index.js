@@ -32,7 +32,6 @@ export default function Confirmation(){
 
     return (
 
-     <Container>
 
   <div class='order'>
     <h2>Confirmation</h2>
@@ -45,9 +44,7 @@ export default function Confirmation(){
     <button onClick={paytHandler} class='button-cta' title='Confirm your purchase'><span>Pay</span></button>
   </div>
 
- 
-     </Container>
- 
+
  
 
     );
